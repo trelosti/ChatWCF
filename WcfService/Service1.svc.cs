@@ -11,34 +11,42 @@ namespace WcfService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Service1 : IService1
     {
-        UnitOfWork unitOfWork = new UnitOfWork();
+        UnitOfWork unitOfWork;
         
         List<User> users = new List<User>();
         int id = 1;
 
         public int Connect(string name)
         {
-            var foundUser = users.FirstOrDefault(i => i.ID == id);
+            unitOfWork = new UnitOfWork();
 
-            User user = new User()
+            var foundUser = users.FirstOrDefault(i => i.Name == name);
+
+            if (foundUser == null) 
+            { 
+
+                User user = new User()
+                {
+                    //ID = id++,
+                    Name = name,
+                    operationContext = OperationContext.Current
+                };
+
+                    //SendMessage($"{user.Name} joined the chat", 0);
+                
+                    users.Add(user);
+                    unitOfWork.Users.insertItem(user);
+                    unitOfWork.Save();
+                    //insertUser(user);
+
+                    return user.ID;
+            }
+            else
             {
-                ID = id++,
-                Name = name,
-                operationContext = OperationContext.Current
-            };
-
-            //SendMessage($"{user.Name} joined the chat", 0);
-            
-
-            if (foundUser == null)
-            {
-                users.Add(user);
-                unitOfWork.Users.insertItem(user);
-                unitOfWork.Save();
-                //insertUser(user);
+                return foundUser.ID;
             }
 
-            return user.ID;
+           
         }
 
         public void Disconnect(int id)

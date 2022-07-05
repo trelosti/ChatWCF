@@ -22,20 +22,17 @@ namespace SignalRChat
         {
             if (!isConnected)
             {
-                // Call the broadcastMessage method to update clients.
                 if (client == null)
                 {
                     client = new Service1Client(new System.ServiceModel.InstanceContext(this));
                 }
 
-
-
                 Id = client.Connect(name);
                 isConnected = true;
-                Clients.All.broadcastMessage(name, message);
-                client.SendMessage(message, Id);
             }
-           
+
+            Clients.All.broadcastMessage(name, message);
+            client.SendMessage(message, Id);
         }
     }
 }

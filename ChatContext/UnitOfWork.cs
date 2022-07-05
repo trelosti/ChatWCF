@@ -55,6 +55,7 @@ namespace CommonChatContext
 
         public void Save()
         {
+
             db.SaveChanges();
         }
 
