@@ -41,13 +41,13 @@ namespace ChatClient
             {
                 client = new Service1Client(new System.ServiceModel.InstanceContext(this));
                 Id = client.Connect(tbUserName.Text);
-                using (var context = new ChatContext())
-                {
-                    context.Users.Add(new ChatModel.User
-                    {
-                        Name = tbUserName.Text,
-                    });
-                }
+                //using (var context = new ChatContext())
+                //{
+                //    context.Users.Add(new ChatModel.User
+                //    {
+                //        Name = tbUserName.Text,
+                //    });
+                //}
 
                 tbUserName.IsEnabled = false;
                 bConnDiscon.Content = "Disconnect";

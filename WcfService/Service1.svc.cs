@@ -11,11 +11,15 @@ namespace WcfService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Service1 : IService1
     {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        
         List<User> users = new List<User>();
         int id = 1;
 
         public int Connect(string name)
         {
+            var foundUser = users.FirstOrDefault(i => i.ID == id);
+
             User user = new User()
             {
                 ID = id++,
@@ -23,12 +27,18 @@ namespace WcfService
                 operationContext = OperationContext.Current
             };
 
-            SendMessage($"{user.Name} joined the chat", 0);
-            users.Add(user);
-            insertUser(user);
+            //SendMessage($"{user.Name} joined the chat", 0);
+            
+
+            if (foundUser == null)
+            {
+                users.Add(user);
+                unitOfWork.Users.insertItem(user);
+                unitOfWork.Save();
+                //insertUser(user);
+            }
 
             return user.ID;
-
         }
 
         public void Disconnect(int id)
@@ -61,20 +71,30 @@ namespace WcfService
 
                 message.Append(msg);
 
-                item.operationContext.GetCallbackChannel<IServiceChatCallback>().MessageCallback(message.ToString());
+                //item.operationContext.GetCallbackChannel<IServiceChatCallback>().MessageCallback(message.ToString());
             }
 
-            
+
 
             if (id != 0)
             {
-                insertMessage(new Message
+                //insertMessage(new Message
+                //{
+                //    UserId = id,
+                //    Msg = msg,
+                //    Username = username ?? "unknown",
+                //    Date = dateTime
+                //});
+
+                unitOfWork.Messages.insertItem(new Message
                 {
                     UserId = id,
                     Msg = msg,
                     Username = username ?? "unknown",
                     Date = dateTime
                 });
+
+                unitOfWork.Save();
             }
 
 
@@ -102,5 +122,6 @@ namespace WcfService
         {
             return str;
         }
+
     }
 }

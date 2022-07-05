@@ -26,9 +26,6 @@ namespace WcfService
         [OperationContract(IsOneWay = true)]
         void SendMessage(string msg, int id);
 
-        [OperationContract]
-        string displayString(string str);
-
     }
 
     public interface IServiceChatCallback
