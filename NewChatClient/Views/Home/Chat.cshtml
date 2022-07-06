@@ -3,6 +3,8 @@
 
 }
 
+<link href="ChatStyle.css" rel="stylesheet" />
+
 <div class="row">
     <div class="container col-md-6">
         <p class="lead">Chat</p>
@@ -19,6 +21,8 @@
         <input data-bind="value:status, valueUpdate: 'keyup'" type="text" />
     </div>
 </div>
+
+
 
 <script src="~/Scripts/knockout-3.5.1.js"></script>
 <script type="text/javascript">
@@ -40,16 +44,18 @@
     <!--SignalR script to update the chat page and send messages.-->
     <script>
         $(function () {
+
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (name, message) {
                 // Add the message to the page.
-                $('#discussion').append('<li><strong>' + htmlEncode(name)
-                    + '</strong>: ' + htmlEncode(message) + '</li>');
+                $('#discussion').append('<div class="border" style:"background-size: auto 125%"><span style="background-color: red; border-radius: 6px; color: white; text-stroke: 4px black"' + htmlEncode(name)
+                    + '</span>: ' + htmlEncode(message) + '</div>');
             };
             // Get the user name and store it to prepend to messages.
             $('#displayname').val(prompt('Enter your name:', ''));
+
             // Set initial focus to message input box.
             $('#message').focus();
             // Start the connection.
@@ -62,6 +68,7 @@
                 });
             });
         });
+        
         // This optional function html-encodes messages for display in the page.
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();

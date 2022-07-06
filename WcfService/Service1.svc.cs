@@ -80,6 +80,7 @@ namespace WcfService
                 }
 
                 message.Append(msg);
+
             }
 
 
@@ -118,9 +119,5 @@ namespace WcfService
             }
         }
 
-        public string displayString(string str)
-        {
-            return str;
-        }
     }
 }

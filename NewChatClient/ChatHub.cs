@@ -31,8 +31,11 @@ namespace SignalRChat
                 isConnected = true;
             }
 
+
             Clients.All.AddNewMessageToPage(name, message);
             client.SendMessage(message, Id);
         }
+
+
     }
 }
