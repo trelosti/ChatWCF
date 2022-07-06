@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using Microsoft.AspNet.SignalR;
-using ChatClientMVC.ChatClient;
+using NewChatClient.ChatClient;
 
 namespace SignalRChat
 {
@@ -27,11 +27,11 @@ namespace SignalRChat
                 }
 
                 Id = client.Connect(name);
-                
+
                 isConnected = true;
             }
 
-            Clients.All.broadcastMessage(name, message);
+            Clients.All.AddNewMessageToPage(name, message);
             client.SendMessage(message, Id);
         }
     }

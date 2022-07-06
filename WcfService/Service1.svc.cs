@@ -2,6 +2,7 @@
 using CommonChatContext;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -14,7 +15,6 @@ namespace WcfService
         UnitOfWork unitOfWork;
         
         List<User> users = new List<User>();
-        int id = 1;
 
         public int Connect(string name)
         {
@@ -27,26 +27,28 @@ namespace WcfService
 
                 User user = new User()
                 {
-                    //ID = id++,
                     Name = name,
                     operationContext = OperationContext.Current
                 };
 
-                    //SendMessage($"{user.Name} joined the chat", 0);
-                
-                    users.Add(user);
-                    unitOfWork.Users.insertItem(user);
+                users.Add(user);
+                unitOfWork.Users.insertItem(user);
+                    
+                try 
+                {
                     unitOfWork.Save();
-                    //insertUser(user);
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
 
-                    return user.ID;
+                return user.ID;
             }
             else
             {
                 return foundUser.ID;
             }
-
-           
         }
 
         public void Disconnect(int id)
@@ -78,22 +80,12 @@ namespace WcfService
                 }
 
                 message.Append(msg);
-
-                //item.operationContext.GetCallbackChannel<IServiceChatCallback>().MessageCallback(message.ToString());
             }
 
 
 
             if (id != 0)
             {
-                //insertMessage(new Message
-                //{
-                //    UserId = id,
-                //    Msg = msg,
-                //    Username = username ?? "unknown",
-                //    Date = dateTime
-                //});
-
                 unitOfWork.Messages.insertItem(new Message
                 {
                     UserId = id,
@@ -130,6 +122,5 @@ namespace WcfService
         {
             return str;
         }
-
     }
 }
