@@ -3,24 +3,46 @@
 
 }
 
-<link href="ChatStyle.css" rel="stylesheet" />
+<style>
+    div.panel-body {
+        overflow: scroll;
+        background: url('https://freefrontend.com/assets/img/css-background-patterns/simple-pattern-with-css3.png');
+    }
+</style>
 
 <div class="row">
-    <div class="container col-md-6">
-        <p class="lead">Chat</p>
-        <div id="isTyping">&nbsp;</div>
-        <form data-bind="submit:addItem">
-            <input type="text" id="message" data-bind='value:itemToAdd, valueUpdate: "afterkeydown"'/>
-            <button class="btn btn-success" type="submit" id="sendmessage" value="Send" data-bind="enable: itemToAdd().length > 0"/>Send</button>
+    <div class="chat-panel panel panel-default container col-md-6">
+        <div class="panel-heading">
+            Chat
+            <i class="fa fa-paper-plane fa-fw"></i>
+        </div>
+
+        <!--<p class="lead">Chat</p>-->
+
+        <div class="panel-body" id="chat" style="height:250px;">
             <input type="hidden" id="displayname" />
-        </form>
+            <p id="discussion">
+            </p>
+        </div>
+
+        <div class="panel-footer">
+            <div class="input-group">
+                <div id="isTyping">&nbsp;</div>
+                <form data-bind="submit:addItem">
+                    <input type="text" id="message" data-bind='value:itemToAdd, valueUpdate: "afterkeydown"' placeholder="Type your message here..."/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="submit" id="sendmessage" value="Send" data-bind="enable: itemToAdd().length > 0" />Send</button>
+                    </span>
+                </form>
+            </div>
+        </div>
         
-        <ul id="discussion">
-        </ul>
+
+        
     </div>
 
     <div class="container col-md-6">
-        <p class="lead">My recent messages </p>
+        <p class="lead" style="color: white">My recent messages </p>
 
         <select multiple="multiple" height="5" data-bind="options:allItems"> </select>
         <div>
@@ -37,7 +59,7 @@
     <script>
         $(function () {
             var chat = $.connection.chatHub;
-            
+
             var BetterListModel = function () {
                 this.itemToAdd = ko.observable("");
                 this.allItems = ko.observableArray();
@@ -54,20 +76,20 @@
             chat.client.addNewMessageToPage = function (name, message, flag) {
                 // Add the message to the page.
                 if (flag === 0) {
-                    $('#discussion').append('<li><span style="color: red; text-stroke: 4px black"><strong>' + htmlEncode(name)
-                        + '</strong>: ' + htmlEncode(message) + '</span></li>');
+                    $('#discussion').append('<p style="color: red; text-stroke: 4px black"><strong><img = src="https://www.phplivesupport.com/pics/icons/avatars/public/avatar_7.png" title="user1">' + htmlEncode(name)
+                        + '</strong>: ' + htmlEncode(message) + '</p>');
                 }
                 else if (flag === 1) {
-                    $('#discussion').append('<li><span style="color: green; text-stroke: 4px black"><strong>' + htmlEncode(name)
-                        + '</strong>: ' + htmlEncode(message) + '</span></li>');
+                    $('#discussion').append('<p style="color: green; text-stroke: 4px black"><strong><img = src="https://www.phplivesupport.com/pics/icons/avatars/public/avatar_71.png" title="user2">' + htmlEncode(name)
+                        + '</strong>: ' + htmlEncode(message) + '</p>');
                 }
                 else if (flag === 2) {
-                    $('#discussion').append('<li><span style="color: blue; text-stroke: 4px black"><strong>' + htmlEncode(name)
-                        + '</strong>: ' + htmlEncode(message) + '</span></li>');
+                    $('#discussion').append('<p style="color: blue; text-stroke: 4px black"><strong><img = src="https://www.phplivesupport.com/pics/icons/avatars/public/avatar_7.png" title="user1">' + htmlEncode(name)
+                        + '</strong>: ' + htmlEncode(message) + '</p>');
                 }
                 else {
-                    $('#discussion').append('<li><span style="color: orange; text-stroke: 4px black"><strong>' + htmlEncode(name)
-                        + '</strong>: ' + htmlEncode(message) + '</span></li>');
+                    $('#discussion').append('<p style="color: orange; text-stroke: 4px black"><strong><img = src="https://www.phplivesupport.com/pics/icons/avatars/public/avatar_71.png" title="user2">' + htmlEncode(name)
+                        + '</strong>: ' + htmlEncode(message) + '</p>');
                 }
             };
 
@@ -86,7 +108,7 @@
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
                     var encodedName = $('<div />').text($('#displayname').val());
-                    
+
                     var encodedMsg = $('<div />').text($('#message').val()).html();
                     chat.server.send($('#displayname').val(), $('#message').val());
                     $('#message').val('').focus();
@@ -107,4 +129,3 @@
         }
     </script>
 }
-
