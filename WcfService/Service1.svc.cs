@@ -15,20 +15,43 @@ namespace WcfService
         UnitOfWork unitOfWork;
         
         List<User> users = new List<User>();
+        int colorCode;
 
         public int Connect(string name)
         {
             unitOfWork = new UnitOfWork();
 
             var foundUser = users.FirstOrDefault(i => i.Name == name);
+            string userColor;
 
             if (foundUser == null) 
             { 
+                if (name[0] % 5 == 0)
+                {
+                    colorCode = 0;
+                    userColor = "Red";
+                }
+                else if (name[0] % 5 == 1)
+                {
+                    colorCode = 1;
+                    userColor = "Green";
+                }
+                else if (name[0] % 5 == 2)
+                {
+                    colorCode = 2;
+                    userColor = "Blue";
+                }
+                else
+                {
+                    colorCode = 3;
+                    userColor = "Orange";
+                }
 
                 User user = new User()
                 {
                     Name = name,
-                    operationContext = OperationContext.Current
+                    operationContext = OperationContext.Current,
+                    Color = userColor
                 };
 
                 users.Add(user);
@@ -51,15 +74,9 @@ namespace WcfService
             }
         }
 
-        public void Disconnect(int id)
+        public int PassColor()
         {
-            var user = users.FirstOrDefault(i => i.ID == id);
-
-            if (user != null)
-            {
-                users.Remove(user);
-                SendMessage($"{user.Name} left the chat", 0);
-            }
+            return colorCode;
         }
 
         public void SendMessage(string msg, int id)
@@ -80,10 +97,7 @@ namespace WcfService
                 }
 
                 message.Append(msg);
-
             }
-
-
 
             if (id != 0)
             {
@@ -97,27 +111,16 @@ namespace WcfService
 
                 unitOfWork.Save();
             }
-
-
         }
 
-        public async void insertMessage(Message msg)
+        public List<User> Users()
         {
-            using (var chatContext = new ChatContext())
-            {
-                chatContext.Messages.Add(msg);
-                await chatContext.SaveChangesAsync();
-            }
+            return (List<User>)unitOfWork.Users.GetAll();
         }
 
-        public async void insertUser(User user)
+        public List<Message> Messages()
         {
-            using (var chatContext = new ChatContext())
-            {
-                chatContext.Users.Add(user);
-                await chatContext.SaveChangesAsync();
-            }
+            return (List<Message>)unitOfWork.Messages.GetAll();
         }
-
     }
 }

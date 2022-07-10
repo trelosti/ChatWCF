@@ -161,6 +161,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Connected Services\ChatClient\NewChatClient.ChatClient.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ChatClient\NewChatClient.ChatClient.Message.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\ChatClient\Service1.disco" />
     <None Include="Connected Services\ChatClient\configuration91.svcinfo" />
     <None Include="Connected Services\ChatClient\configuration.svcinfo" />

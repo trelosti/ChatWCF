@@ -23,6 +23,9 @@ namespace NewChatClient.ChatClient {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ColorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -35,6 +38,19 @@ namespace NewChatClient.ChatClient {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Color {
+            get {
+                return this.ColorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ColorField, value) != true)) {
+                    this.ColorField = value;
+                    this.RaisePropertyChanged("Color");
+                }
             }
         }
         
@@ -187,35 +203,35 @@ namespace NewChatClient.ChatClient {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatClient.IService1", CallbackContract=typeof(NewChatClient.ChatClient.IService1Callback))]
     public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/insertUser", ReplyAction="http://tempuri.org/IService1/insertUserResponse")]
-        void insertUser(NewChatClient.ChatClient.User user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/insertUser", ReplyAction="http://tempuri.org/IService1/insertUserResponse")]
-        System.Threading.Tasks.Task insertUserAsync(NewChatClient.ChatClient.User user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/insertMessage", ReplyAction="http://tempuri.org/IService1/insertMessageResponse")]
-        void insertMessage(NewChatClient.ChatClient.Message msg);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/insertMessage", ReplyAction="http://tempuri.org/IService1/insertMessageResponse")]
-        System.Threading.Tasks.Task insertMessageAsync(NewChatClient.ChatClient.Message msg);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Connect", ReplyAction="http://tempuri.org/IService1/ConnectResponse")]
         int Connect(string name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Connect", ReplyAction="http://tempuri.org/IService1/ConnectResponse")]
         System.Threading.Tasks.Task<int> ConnectAsync(string name);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Disconnect", ReplyAction="http://tempuri.org/IService1/DisconnectResponse")]
-        void Disconnect(int id);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Disconnect", ReplyAction="http://tempuri.org/IService1/DisconnectResponse")]
-        System.Threading.Tasks.Task DisconnectAsync(int id);
-        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/SendMessage")]
         void SendMessage(string msg, int id);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/SendMessage")]
         System.Threading.Tasks.Task SendMessageAsync(string msg, int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PassColor", ReplyAction="http://tempuri.org/IService1/PassColorResponse")]
+        int PassColor();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PassColor", ReplyAction="http://tempuri.org/IService1/PassColorResponse")]
+        System.Threading.Tasks.Task<int> PassColorAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Users", ReplyAction="http://tempuri.org/IService1/UsersResponse")]
+        NewChatClient.ChatClient.User[] Users();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Users", ReplyAction="http://tempuri.org/IService1/UsersResponse")]
+        System.Threading.Tasks.Task<NewChatClient.ChatClient.User[]> UsersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Messages", ReplyAction="http://tempuri.org/IService1/MessagesResponse")]
+        NewChatClient.ChatClient.Message[] Messages();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Messages", ReplyAction="http://tempuri.org/IService1/MessagesResponse")]
+        System.Threading.Tasks.Task<NewChatClient.ChatClient.Message[]> MessagesAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -253,22 +269,6 @@ namespace NewChatClient.ChatClient {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public void insertUser(NewChatClient.ChatClient.User user) {
-            base.Channel.insertUser(user);
-        }
-        
-        public System.Threading.Tasks.Task insertUserAsync(NewChatClient.ChatClient.User user) {
-            return base.Channel.insertUserAsync(user);
-        }
-        
-        public void insertMessage(NewChatClient.ChatClient.Message msg) {
-            base.Channel.insertMessage(msg);
-        }
-        
-        public System.Threading.Tasks.Task insertMessageAsync(NewChatClient.ChatClient.Message msg) {
-            return base.Channel.insertMessageAsync(msg);
-        }
-        
         public int Connect(string name) {
             return base.Channel.Connect(name);
         }
@@ -277,20 +277,36 @@ namespace NewChatClient.ChatClient {
             return base.Channel.ConnectAsync(name);
         }
         
-        public void Disconnect(int id) {
-            base.Channel.Disconnect(id);
-        }
-        
-        public System.Threading.Tasks.Task DisconnectAsync(int id) {
-            return base.Channel.DisconnectAsync(id);
-        }
-        
         public void SendMessage(string msg, int id) {
             base.Channel.SendMessage(msg, id);
         }
         
         public System.Threading.Tasks.Task SendMessageAsync(string msg, int id) {
             return base.Channel.SendMessageAsync(msg, id);
+        }
+        
+        public int PassColor() {
+            return base.Channel.PassColor();
+        }
+        
+        public System.Threading.Tasks.Task<int> PassColorAsync() {
+            return base.Channel.PassColorAsync();
+        }
+        
+        public NewChatClient.ChatClient.User[] Users() {
+            return base.Channel.Users();
+        }
+        
+        public System.Threading.Tasks.Task<NewChatClient.ChatClient.User[]> UsersAsync() {
+            return base.Channel.UsersAsync();
+        }
+        
+        public NewChatClient.ChatClient.Message[] Messages() {
+            return base.Channel.Messages();
+        }
+        
+        public System.Threading.Tasks.Task<NewChatClient.ChatClient.Message[]> MessagesAsync() {
+            return base.Channel.MessagesAsync();
         }
     }
 }

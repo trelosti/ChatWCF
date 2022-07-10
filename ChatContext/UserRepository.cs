@@ -1,9 +1,5 @@
 ﻿using ChatModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommonChatContext
 {
@@ -14,6 +10,11 @@ namespace CommonChatContext
         public UserRepository(ChatContext db)
         {
             this.db = db;
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return db.Users;
         }
 
         public void insertItem(User item)

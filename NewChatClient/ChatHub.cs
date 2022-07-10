@@ -1,7 +1,8 @@
-﻿using System;
-using System.Web;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using NewChatClient.ChatClient;
+using Microsoft.AspNet.SignalR.Hubs;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace SignalRChat
 {
@@ -31,11 +32,28 @@ namespace SignalRChat
                 isConnected = true;
             }
 
-
-            Clients.All.AddNewMessageToPage(name, message);
+            int flag = client.PassColor();
+            Clients.All.AddNewMessageToPage(name, message, flag);
             client.SendMessage(message, Id);
         }
 
+        public void IsTyping(string name)
+        {
+            Clients.All.sayWhoIsTyping(name);
+        }
 
+        public List<User> GetUsers()
+        {
+            var users = client.Users();
+
+            return users.ToList<User>();
+        }
+
+        public List<Message> GetMessages()
+        {
+            var messages = client.Messages();
+
+            return messages.ToList<Message>();
+        }
     }
 }
