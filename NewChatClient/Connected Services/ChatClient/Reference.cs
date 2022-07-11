@@ -215,12 +215,6 @@ namespace NewChatClient.ChatClient {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/SendMessage")]
         System.Threading.Tasks.Task SendMessageAsync(string msg, int id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PassColor", ReplyAction="http://tempuri.org/IService1/PassColorResponse")]
-        int PassColor();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/PassColor", ReplyAction="http://tempuri.org/IService1/PassColorResponse")]
-        System.Threading.Tasks.Task<int> PassColorAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Users", ReplyAction="http://tempuri.org/IService1/UsersResponse")]
         NewChatClient.ChatClient.User[] Users();
         
@@ -283,14 +277,6 @@ namespace NewChatClient.ChatClient {
         
         public System.Threading.Tasks.Task SendMessageAsync(string msg, int id) {
             return base.Channel.SendMessageAsync(msg, id);
-        }
-        
-        public int PassColor() {
-            return base.Channel.PassColor();
-        }
-        
-        public System.Threading.Tasks.Task<int> PassColorAsync() {
-            return base.Channel.PassColorAsync();
         }
         
         public NewChatClient.ChatClient.User[] Users() {

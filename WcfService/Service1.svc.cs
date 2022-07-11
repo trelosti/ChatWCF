@@ -15,7 +15,6 @@ namespace WcfService
         UnitOfWork unitOfWork;
         
         List<User> users = new List<User>();
-        int colorCode;
 
         public int Connect(string name)
         {
@@ -28,22 +27,18 @@ namespace WcfService
             { 
                 if (name[0] % 5 == 0)
                 {
-                    colorCode = 0;
                     userColor = "Red";
                 }
                 else if (name[0] % 5 == 1)
                 {
-                    colorCode = 1;
                     userColor = "Green";
                 }
                 else if (name[0] % 5 == 2)
                 {
-                    colorCode = 2;
                     userColor = "Blue";
                 }
                 else
                 {
-                    colorCode = 3;
                     userColor = "Orange";
                 }
 
@@ -72,11 +67,6 @@ namespace WcfService
             {
                 return foundUser.ID;
             }
-        }
-
-        public int PassColor()
-        {
-            return colorCode;
         }
 
         public void SendMessage(string msg, int id)

@@ -6,7 +6,7 @@
 <style>
     div.panel-body {
         overflow: scroll;
-        background: url('https://freefrontend.com/assets/img/css-background-patterns/simple-pattern-with-css3.png');
+        background: url('https://i.pinimg.com/564x/a8/e5/66/a8e5664d7887e8797f168fc2ed394319.jpg');
     }
 </style>
 
@@ -29,16 +29,13 @@
             <div class="input-group">
                 <div id="isTyping">&nbsp;</div>
                 <form data-bind="submit:addItem">
-                    <input type="text" id="message" data-bind='value:itemToAdd, valueUpdate: "afterkeydown"' placeholder="Type your message here..."/>
+                    <input type="text" id="message" data-bind='value:itemToAdd, valueUpdate: "afterkeydown"' placeholder="Type your message here..." />
                     <span class="input-group-btn">
                         <button class="btn btn-success" type="submit" id="sendmessage" value="Send" data-bind="enable: itemToAdd().length > 0" />Send</button>
                     </span>
                 </form>
             </div>
         </div>
-        
-
-        
     </div>
 
     <div class="container col-md-6">
@@ -60,11 +57,15 @@
         $(function () {
             var chat = $.connection.chatHub;
 
-            var BetterListModel = function () {
+            var ChatListModel = function () {
                 this.itemToAdd = ko.observable("");
                 this.allItems = ko.observableArray();
 
                 this.addItem = function () {
+                    if (this.allItems().length > 5) {
+                        this.allItems.removeAll();
+                    }
+
                     this.allItems.push(this.itemToAdd());
                 };
 
@@ -120,7 +121,7 @@
                 });
             });
 
-            ko.applyBindings(new BetterListModel());
+            ko.applyBindings(new ChatListModel());
         });
 
         function htmlEncode(value) {

@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.SignalR;
 using NewChatClient.ChatClient;
-using Microsoft.AspNet.SignalR.Hubs;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace SignalRChat
 {
+
     public class ChatHub : Hub, IService1Callback
     {
         bool isConnected = false;
@@ -32,7 +30,28 @@ namespace SignalRChat
                 isConnected = true;
             }
 
-            int flag = client.PassColor();
+            int flag;
+
+            if (name[0] % 5 == 0)
+            {
+                flag = 0;
+
+            }
+            else if (name[0] % 5 == 1)
+            {
+                flag = 1;
+                
+            }
+            else if (name[0] % 5 == 2)
+            {
+                flag = 2;
+                
+            }
+            else
+            {
+                flag = 3;
+            }
+               
             Clients.All.AddNewMessageToPage(name, message, flag);
             client.SendMessage(message, Id);
         }
@@ -40,20 +59,6 @@ namespace SignalRChat
         public void IsTyping(string name)
         {
             Clients.All.sayWhoIsTyping(name);
-        }
-
-        public List<User> GetUsers()
-        {
-            var users = client.Users();
-
-            return users.ToList<User>();
-        }
-
-        public List<Message> GetMessages()
-        {
-            var messages = client.Messages();
-
-            return messages.ToList<Message>();
         }
     }
 }

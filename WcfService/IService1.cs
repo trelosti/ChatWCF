@@ -13,8 +13,6 @@ namespace WcfService
         [OperationContract(IsOneWay = true)]
         void SendMessage(string msg, int id);
         [OperationContract]
-        int PassColor();
-        [OperationContract]
         List<User> Users();
         [OperationContract]
         List<Message> Messages();
